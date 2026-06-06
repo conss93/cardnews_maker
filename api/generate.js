@@ -5,6 +5,14 @@ const client = new OpenAI({
 });
 
 export default async function handler(req, res) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
+
   if (req.method !== "POST") {
     return res.status(405).json({
       error: "POST 요청만 가능합니다.",
@@ -39,28 +47,16 @@ export default async function handler(req, res) {
 - 톤: ${tone || "친근하지만 구조적으로 설명"}
 
 [작성 조건]
-- 한국어로 작성
+- 한국어
 - 인스타 카드뉴스용
 - 총 7장
-- 각 장은 title, body를 가진다
+- title, body를 가진 JSON 배열만 출력
 - title은 짧고 강하게
 - body는 1~2문장
 - 너무 광고스럽지 않게
 - 과장 표현 금지
-- "구조", "흐름", "전환" 관점을 자연스럽게 반영
+- 구조, 흐름, 전환 관점을 자연스럽게 반영
 - 마지막 장에는 부드러운 CTA 포함
-
-[출력 형식]
-JSON 배열만 출력해라.
-
-예시:
-
-[
-  {
-    "title": "제목",
-    "body": "본문"
-  }
-]
 `;
 
     const response = await client.responses.create({
