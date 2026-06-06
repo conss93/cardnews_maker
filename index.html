@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>청새치 콘텐츠 생성기 v3</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+      background: #f5f6f8;
+      color: #171717;
+    }
+
+    .app {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 40px 20px 80px;
+    }
+
+    .hero { margin-bottom: 24px; }
+
+    .badge {
+      display: inline-flex;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: #e8f1ff;
+      color: #2563eb;
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(34px, 5vw, 56px);
+      letter-spacing: -0.07em;
+      line-height: 1.05;
+    }
+
+    .hero p {
+      margin: 0;
+      color: #666;
+      line-height: 1.65;
+      font-size: 16px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .panel {
+      background: #fff;
+      border: 1px solid rgba(0,0,0,0.07);
+      border-radius: 24px;
+      padding: 22px;
+      box-shadow: 0 14px 45px rgba(0,0,0,0.06);
+    }
+
+    .panel h2 {
+      margin: 0 0 16px;
+      font-size: 20px;
+      letter-spacing: -0.04em;
+    }
+
+    .panel h3 {
+      margin: 22px 0 12px;
+      font-size: 16px;
+      letter-spacing: -0.03em;
+    }
+
+    .form-group { margin-bottom: 16px; }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 13px;
+      font-weight: 900;
+      color: #333;
+    }
+
+    select, input, textarea {
+      width: 100%;
+      border: 1px solid #d9dee8;
+      border-radius: 14px;
+      padding: 12px 13px;
+      font-size: 14px;
+      background: #fff;
+      outline: none;
+    }
+
+    textarea {
+      min-height: 92px;
+      line-height: 1.55;
+      resize: vertical;
+    }
+
+    select:focus, input:focus, textarea:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 4px rgba(37,99,235,.12);
+    }
+
+    button {
+      border: 0;
+      border-radius: 14px;
+      padding: 13px 15px;
+      font-size: 14px;
+      font-weight: 900;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+
+    button:hover { transform: translateY(-1px); }
+
+    .primary { width: 100%; background: #171717; color: #fff; }
+    .secondary { background: #eef2f7; color: #171717; }
+    .blue { background:#2563eb; color:#fff; }
+    .danger { background:#fff0f0; color:#d11; }
+
+    .row { display: flex; gap: 10px; }
+    .row > * { flex: 1; }
+
+    .db-preview {
+      background: #f7f9fc;
+      border: 1px solid #edf0f5;
+      border-radius: 16px;
+      padding: 14px;
+      font-size: 13px;
+      line-height: 1.6;
+      color: #555;
+      white-space: pre-wrap;
+    }
+
+    .status {
+      margin-top: 12px;
+      font-size: 13px;
+      color: #777;
+      line-height: 1.5;
+    }
+
+    .empty {
+      height: 420px;
+      display: grid;
+      place-items: center;
+      color: #777;
+      text-align: center;
+      line-height: 1.7;
+      background: #f7f9fc;
+      border-radius: 20px;
+      border: 1px dashed #d6dbe5;
+    }
+
+    .content-card {
+      border: 1px solid #e5e8ef;
+      border-radius: 18px;
+      padding: 18px;
+      background: #fff;
+      margin-bottom: 14px;
+    }
+
+    .content-card b {
+      display: block;
+      margin-bottom: 8px;
+      color: #2563eb;
+      font-size: 13px;
+    }
+
+    .content-card h3 {
+      margin: 0 0 10px;
+      font-size: 22px;
+      letter-spacing: -0.05em;
+      line-height: 1.25;
+      white-space: pre-line;
+    }
+
+    .content-card p {
+      margin: 0;
+      color: #444;
+      line-height: 1.65;
+      white-space: pre-line;
+    }
+
+    .tools {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .tools button { flex: 1; }
+
+    .text-output {
+      background: #0f172a;
+      color: #e5e7eb;
+      border-radius: 18px;
+      padding: 18px;
+      line-height: 1.7;
+      white-space: pre-wrap;
+      font-size: 14px;
+      overflow: auto;
+    }
+
+    .hashtags { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 8px; }
+
+    .hashtag {
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: #eef2ff;
+      color: #2563eb;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .blog-title { font-size: 28px; letter-spacing: -0.06em; margin: 0 0 14px; }
+    .section-title { margin: 18px 0 8px; font-size: 14px; color: #2563eb; }
+
+    .edit-grid {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .edit-item {
+      border: 1px solid #e5e8ef;
+      border-radius: 18px;
+      padding: 16px;
+      background: #fbfcfe;
+    }
+
+    .edit-item-title {
+      font-size: 13px;
+      font-weight: 900;
+      color: #2563eb;
+      margin-bottom: 10px;
+    }
+
+    .template-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .template-btn {
+      text-align: left;
+      padding: 12px;
+      border-radius: 16px;
+      background: #f4f6f9;
+      border: 1px solid #e5e8ef;
+      cursor: pointer;
+    }
+
+    .template-btn.active {
+      background: #111827;
+      color: #fff;
+      border-color: #111827;
+    }
+
+    .template-btn strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 13px;
+    }
+
+    .template-btn span {
+      display: block;
+      font-size: 12px;
+      opacity: 0.72;
+      line-height: 1.35;
+    }
+
+    .control-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .control-box {
+      background:#f7f9fc;
+      border:1px solid #edf0f5;
+      border-radius:16px;
+      padding:14px;
+    }
+
+    .range-label {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      font-size:13px;
+      font-weight:900;
+      margin-bottom:8px;
+    }
+
+    .watermark-box {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .toggle-line {
+      display:flex;
+      align-items:center;
+      gap:8px;
+      font-size:13px;
+      font-weight:800;
+      margin-bottom: 12px;
+    }
+
+    .toggle-line input { width:auto; }
+
+    .preview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(252px, 1fr));
+      gap: 16px;
+    }
+
+    .preview-item {
+      border: 1px solid #e5e8ef;
+      border-radius: 18px;
+      padding: 12px;
+      background: #fff;
+    }
+
+    .ig-card {
+      width: 216px;
+      height: 270px;
+      overflow: hidden;
+      position: relative;
+      color: #161616;
+      background: #ffffff;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 25px 22px;
+      isolation: isolate;
+    }
+
+    .ig-card.output-size {
+      width: 1080px;
+      height: 1350px;
+      padding: 125px 110px;
+    }
+
+    .card-image {
+      position:absolute;
+      inset:0;
+      z-index:0;
+      display:none;
+      overflow:hidden;
+    }
+
+    .has-card-image .card-image { display:block; }
+
+    .card-image img {
+      width:100%;
+      height:100%;
+      object-position:center;
+    }
+
+    .image-fit-cover { object-fit: cover; }
+    .image-fit-contain { object-fit: contain; background:#f1f1f1; }
+    .image-fit-original {
+      object-fit: none;
+      width:auto !important;
+      height:auto !important;
+      max-width:none;
+      max-height:none;
+      position:absolute;
+      left:50%;
+      top:50%;
+      transform:translate(-50%,-50%);
+    }
+
+    .has-card-image::after {
+      content:"";
+      position:absolute;
+      inset:0;
+      background:rgba(0,0,0,.48);
+      z-index:1;
+    }
+
+    .ig-title {
+      white-space: pre-line;
+      font-weight: 950;
+      letter-spacing: -0.075em;
+      line-height: 1.04;
+      font-size: var(--preview-title-size, 31px);
+      position: relative;
+      z-index: 2;
+    }
+
+    .output-size .ig-title { font-size: var(--output-title-size, 155px); }
+
+    .ig-body {
+      white-space: pre-line;
+      font-size: var(--preview-body-size, 13px);
+      line-height: 1.5;
+      color: #444;
+      font-weight: 650;
+      position: relative;
+      z-index: 2;
+    }
+
+    .output-size .ig-body { font-size: var(--output-body-size, 58px); }
+
+    .has-card-image .ig-title,
+    .has-card-image .ig-body,
+    .has-card-image .ig-number { color:#fff; }
+
+    .has-card-image .ig-body { color: rgba(255,255,255,.86); }
+
+    .ig-number {
+      position: absolute;
+      top: 24px;
+      right: 22px;
+      font-size: 12px;
+      font-weight: 950;
+      letter-spacing: -0.02em;
+      opacity: 0.45;
+      z-index: 3;
+    }
+
+    .output-size .ig-number {
+      top: 90px;
+      right: 98px;
+      font-size: 48px;
+    }
+
+    .watermark {
+      position: absolute;
+      right: 18px;
+      bottom: 18px;
+      z-index: 5;
+      opacity: 0.28;
+      max-width: 74px;
+      max-height: 44px;
+      object-fit: contain;
+      display: none;
+    }
+
+    .output-size .watermark {
+      right: 72px;
+      bottom: 72px;
+      max-width: 300px;
+      max-height: 180px;
+    }
+
+    .wm-on .watermark { display:block; }
+
+    .template-basic {
+      background:
+        radial-gradient(circle at 88% 12%, rgba(37,99,235,.18), transparent 28%),
+        linear-gradient(135deg,#fff 0%,#f8fafc 58%,#e8f1ff 100%);
+    }
+
+    .template-basic::before {
+      content: "";
+      position: absolute;
+      inset: 14px;
+      border: 1px solid rgba(0,0,0,.08);
+      z-index: 1;
+      pointer-events:none;
+    }
+
+    .output-size.template-basic::before { inset: 70px; }
+
+    .template-memo {
+      background: #fff7c7;
+      background-image: linear-gradient(rgba(0,0,0,.05) 1px, transparent 1px);
+      background-size: 100% 32px;
+    }
+
+    .template-memo::before {
+      content: "";
+      position:absolute;
+      top:0;
+      left:22px;
+      width:2px;
+      height:100%;
+      background: rgba(255,77,77,.35);
+      z-index:1;
+    }
+
+    .output-size.template-memo::before { left:110px; width:8px; }
+
+    .template-ios {
+      background: #f7f7f2;
+    }
+
+    .template-ios::before {
+      content: "메모";
+      position:absolute;
+      top:22px;
+      left:22px;
+      font-size:12px;
+      font-weight:900;
+      color:#f59e0b;
+      z-index:2;
+    }
+
+    .output-size.template-ios::before {
+      top:84px;
+      left:110px;
+      font-size:52px;
+    }
+
+    .template-ios .ig-title { margin-top: 28px; }
+    .output-size.template-ios .ig-title { margin-top: 110px; }
+
+    .template-news {
+      background: #0b1220;
+      color: #fff;
+    }
+
+    .template-news .ig-body { color: rgba(255,255,255,.78); }
+
+    .template-news::before {
+      content: "BREAKING";
+      position:absolute;
+      top:22px;
+      left:22px;
+      padding:5px 9px;
+      background:#ef4444;
+      color:#fff;
+      font-size:10px;
+      font-weight:950;
+      letter-spacing:.05em;
+      z-index:2;
+    }
+
+    .output-size.template-news::before {
+      top:84px;
+      left:110px;
+      padding:22px 38px;
+      font-size:42px;
+    }
+
+    .template-news .ig-title { margin-top: 28px; }
+    .output-size.template-news .ig-title { margin-top: 120px; }
+
+    .template-paper {
+      background:#f3ead7;
+      color:#161616;
+    }
+
+    .template-paper::before {
+      content:"[속보]";
+      position:absolute;
+      top:22px;
+      left:22px;
+      right:22px;
+      padding-bottom:8px;
+      border-bottom:2px solid #161616;
+      text-align:center;
+      font-family: Georgia, "Apple SD Gothic Neo", serif;
+      font-weight:900;
+      font-size:16px;
+      z-index:2;
+    }
+
+    .output-size.template-paper::before {
+      top:84px;
+      left:110px;
+      right:110px;
+      padding-bottom:30px;
+      border-bottom-width:8px;
+      font-size:70px;
+    }
+
+    .template-paper .ig-title {
+      font-family: Georgia, "Apple SD Gothic Neo", serif;
+      letter-spacing:-0.065em;
+      margin-top:42px;
+    }
+
+    .output-size.template-paper .ig-title { margin-top:170px; }
+
+    .hidden-render-area {
+      position: fixed;
+      left: -99999px;
+      top: 0;
+      width: 1080px;
+      height: 1350px;
+      pointer-events: none;
+      opacity: 0;
+    }
+
+    .download-all {
+      margin-top: 16px;
+      display:flex;
+      gap:10px;
+    }
+
+    .download-all button { flex:1; }
+
+    .image-controls {
+      margin-top:12px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:8px;
+      align-items:end;
+    }
+
+    .image-controls button {
+      padding:10px;
+      font-size:12px;
+    }
+
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; }
+      .watermark-box { grid-template-columns:1fr; }
+      .image-controls { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <section class="hero">
+      <div class="badge">CHEONGSAECHI CONTENT STUDIO</div>
+      <h1>청새치 콘텐츠 생성기 v3</h1>
+      <p>카드뉴스는 문구 수정·템플릿·글자 크기·카드별 이미지·워터마크·1080×1350 PNG 저장을 지원합니다.</p>
+    </section>
+
+    <section class="layout">
+      <aside class="panel">
+        <h2>생성 설정</h2>
+
+        <div class="form-group">
+          <label for="categorySelect">카테고리</label>
+          <select id="categorySelect" onchange="onCategoryChange()"></select>
+        </div>
+
+        <div class="form-group">
+          <label for="topicSelect">주제</label>
+          <select id="topicSelect" onchange="onTopicChange()"></select>
+        </div>
+
+        <div class="form-group">
+          <label for="contentType">콘텐츠 유형</label>
+          <select id="contentType" onchange="onContentTypeChange()">
+            <option value="카드뉴스">카드뉴스</option>
+            <option value="인스타설명글">인스타 설명글</option>
+            <option value="블로그">블로그</option>
+            <option value="스레드">스레드</option>
+          </select>
+        </div>
+
+        <div class="row">
+          <div class="form-group">
+            <label for="contentGoal">콘텐츠 목표</label>
+            <select id="contentGoal">
+              <option value="브랜딩">브랜딩</option>
+              <option value="상담">상담</option>
+              <option value="신뢰">신뢰</option>
+              <option value="유입">유입</option>
+              <option value="저장">저장</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="tone">톤</label>
+            <select id="tone">
+              <option value="친근하지만 전문적으로">친근하지만 전문적으로</option>
+              <option value="담백하게">담백하게</option>
+              <option value="직설적으로">직설적으로</option>
+              <option value="스토리텔링식으로">스토리텔링식으로</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="framework">구조</label>
+          <select id="framework">
+            <option value="문제-원인-해결">문제-원인-해결 · 제일 무난한 설명형</option>
+            <option value="PAS">PAS · 문제를 찌르고 해결로 연결</option>
+            <option value="AIDA">AIDA · 관심을 끌고 행동까지 유도</option>
+            <option value="BAB">BAB · 변화 전/후를 보여주는 방식</option>
+            <option value="스토리텔링">스토리텔링 · 경험담처럼 풀어내기</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="brand">브랜드</label>
+          <input id="brand" value="청새치웹" />
+        </div>
+
+        <div class="form-group">
+          <label>선택한 DB 내용</label>
+          <div id="dbPreview" class="db-preview">DB를 불러오는 중...</div>
+        </div>
+
+        <button class="primary" onclick="generateContent()">선택한 콘텐츠만 생성하기</button>
+        <div id="status" class="status"></div>
+      </aside>
+
+      <section class="panel result">
+        <div class="tools">
+          <button class="secondary" onclick="copyResult()">결과 복사</button>
+          <button class="secondary" onclick="clearResult()">결과 지우기</button>
+        </div>
+
+        <div id="result">
+          <div class="empty">
+            왼쪽에서 주제와 콘텐츠 유형을 선택한 뒤<br />
+            생성하기 버튼을 눌러주세요.
+          </div>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <div id="hiddenRenderArea" class="hidden-render-area"></div>
+
+  <script>
+    const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbxQjujcDKVQ8Z0DBNRoEp4ASiboER2kMCROaH15aeU_Bgk7VJMz43CLH6DerrN9z7Hn/exec";
+    const GENERATE_API_URL = "https://cardnews-maker-lyart.vercel.app/api/generate";
+
+    const templates = {
+      basic: { name: "기본형", desc: "화이트·구조형", className: "template-basic" },
+      memo: { name: "메모장형", desc: "노란 메모지", className: "template-memo" },
+      ios: { name: "iOS형", desc: "아이폰 메모 느낌", className: "template-ios" },
+      news: { name: "뉴스형", desc: "속보·강조형", className: "template-news" },
+      paper: { name: "신문형", desc: "[속보] 신문 칼럼형", className: "template-paper" }
+    };
+
+    let contentDB = [];
+    let selectedItem = null;
+    let lastPlainText = "";
+    let cardNewsData = [];
+    let selectedTemplate = "basic";
+    let watermarkDataUrl = "";
+    let watermarkEnabled = true;
+    let watermarkOpacity = 28;
+    let titleSize = 155;
+    let bodySize = 58;
+
+    window.addEventListener("DOMContentLoaded", loadContentDB);
+
+    async function loadContentDB() {
+      setStatus("구글 시트 DB를 불러오는 중...");
+      try {
+        const res = await fetch(SHEET_API_URL);
+        contentDB = await res.json();
+
+        const waitingItems = contentDB.filter(item => String(item["상태"] || "").trim() !== "완료");
+        contentDB = waitingItems.length ? waitingItems : contentDB;
+
+        renderCategories();
+        setStatus(`DB 로드 완료: ${contentDB.length}개 주제`);
+      } catch (error) {
+        setStatus("DB 로드 실패: " + error.message);
+      }
+    }
+
+    function renderCategories() {
+      const categorySelect = document.getElementById("categorySelect");
+      const categories = [...new Set(contentDB.map(item => item["카테고리"]).filter(Boolean))];
+
+      categorySelect.innerHTML = categories
+        .map(category => `<option value="${escapeAttr(category)}">${escapeHtml(category)}</option>`)
+        .join("");
+
+      onCategoryChange();
+    }
+
+    function onCategoryChange() {
+      const category = document.getElementById("categorySelect").value;
+      const topicSelect = document.getElementById("topicSelect");
+      const topics = contentDB.filter(item => item["카테고리"] === category);
+
+      topicSelect.innerHTML = topics
+        .map(item => `<option value="${escapeAttr(item["ID"])}">${escapeHtml(item["주제"])}</option>`)
+        .join("");
+
+      onTopicChange();
+    }
+
+    function onTopicChange() {
+      const id = String(document.getElementById("topicSelect").value);
+      selectedItem = contentDB.find(item => String(item["ID"]) === id) || null;
+      renderDBPreview();
+    }
+
+    function onContentTypeChange() {
+      clearResult();
+    }
+
+    function renderDBPreview() {
+      const box = document.getElementById("dbPreview");
+
+      if (!selectedItem) {
+        box.textContent = "선택된 주제가 없습니다.";
+        return;
+      }
+
+      box.textContent =
+`주제: ${selectedItem["주제"] || ""}
+핵심메시지: ${selectedItem["핵심메시지"] || ""}
+
+근거
+1. ${selectedItem["근거1"] || ""}
+2. ${selectedItem["근거2"] || ""}
+3. ${selectedItem["근거3"] || ""}
+
+반드시포함: ${selectedItem["반드시포함"] || ""}
+금지내용: ${selectedItem["금지내용"] || ""}
+메모: ${selectedItem["메모"] || ""}`;
+    }
+
+    async function generateContent() {
+      if (!selectedItem) {
+        alert("주제를 먼저 선택해주세요.");
+        return;
+      }
+
+      const contentType = document.getElementById("contentType").value;
+
+      if (!isAllowedContentType(selectedItem, contentType)) {
+        alert(`이 주제는 '${contentType}' 생성이 FALSE로 되어 있습니다.`);
+        return;
+      }
+
+      setStatus("AI가 콘텐츠를 생성하는 중...");
+      document.getElementById("result").innerHTML = `<div class="empty">생성 중...</div>`;
+
+      const payload = {
+        id: selectedItem["ID"],
+        category: selectedItem["카테고리"],
+        topic: selectedItem["주제"],
+        coreMessage: selectedItem["핵심메시지"],
+        evidence1: selectedItem["근거1"],
+        evidence2: selectedItem["근거2"],
+        evidence3: selectedItem["근거3"],
+        requiredKeywords: selectedItem["반드시포함"],
+        forbiddenTopics: selectedItem["금지내용"],
+        memo: selectedItem["메모"],
+        contentType,
+        contentGoal: document.getElementById("contentGoal").value,
+        tone: document.getElementById("tone").value,
+        framework: getFrameworkValue(),
+        brand: document.getElementById("brand").value
+      };
+
+      try {
+        const res = await fetch(GENERATE_API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+
+        if (data.error) throw new Error(data.error);
+
+        const parsed = safeJsonParse(data.result);
+        renderResult(contentType, parsed, data.result);
+        setStatus("생성 완료");
+      } catch (error) {
+        document.getElementById("result").innerHTML =
+          `<div class="text-output">에러 발생: ${escapeHtml(error.message)}</div>`;
+        setStatus("생성 실패");
+      }
+    }
+
+    function getFrameworkValue() {
+      const raw = document.getElementById("framework").value;
+      return raw.split("·")[0].trim();
+    }
+
+    function isAllowedContentType(item, type) {
+      const value = item[type];
+      return value === true || String(value).toUpperCase() === "TRUE" || value === 1;
+    }
+
+    function safeJsonParse(text) {
+      try {
+        return JSON.parse(text);
+      } catch (error) {
+        const cleaned = String(text)
+          .replace(/^```json\s*/i, "")
+          .replace(/^```\s*/i, "")
+          .replace(/```$/i, "")
+          .trim();
+        return JSON.parse(cleaned);
+      }
+    }
+
+    function renderResult(contentType, parsed, raw) {
+      if (contentType === "카드뉴스") renderCardNewsWorkbench(parsed);
+      else if (contentType === "인스타설명글") renderInstagram(parsed);
+      else if (contentType === "블로그") renderBlog(parsed);
+      else if (contentType === "스레드") renderThreads(parsed);
+      else renderRaw(raw);
+    }
+
+    function renderCardNewsWorkbench(cards) {
+      cardNewsData = cards.map(card => ({
+        title: card.title || "",
+        body: card.body || "",
+        image: "",
+        imageFit: "cover"
+      }));
+
+      updatePlainCardText();
+
+      document.getElementById("result").innerHTML = `
+        <h2>카드뉴스 문구 수정</h2>
+        <div class="edit-grid" id="cardEditors"></div>
+
+        <h3>디자인 템플릿</h3>
+        <div class="template-grid" id="templateGrid"></div>
+
+        <h3>텍스트 크기</h3>
+        <div class="control-grid">
+          <div class="control-box">
+            <div class="range-label">
+              <span>제목 크기</span>
+              <span id="titleSizeText">${titleSize}px</span>
+            </div>
+            <input type="range" min="90" max="190" value="${titleSize}" oninput="changeTitleSize(this.value)" />
+          </div>
+          <div class="control-box">
+            <div class="range-label">
+              <span>본문 크기</span>
+              <span id="bodySizeText">${bodySize}px</span>
+            </div>
+            <input type="range" min="34" max="84" value="${bodySize}" oninput="changeBodySize(this.value)" />
+          </div>
+        </div>
+
+        <h3>워터마크</h3>
+        <div class="watermark-box">
+          <div>
+            <label>로고 이미지 업로드</label>
+            <input type="file" accept="image/*" onchange="handleWatermarkUpload(event)" />
+            <div class="toggle-line" style="margin-top:12px;">
+              <input type="checkbox" id="watermarkEnabled" checked onchange="toggleWatermark()" />
+              <span>워터마크 사용</span>
+            </div>
+          </div>
+          <div>
+            <label for="watermarkOpacity">투명도: <span id="watermarkOpacityText">${watermarkOpacity}%</span></label>
+            <input id="watermarkOpacity" type="range" min="5" max="100" value="${watermarkOpacity}" oninput="changeWatermarkOpacity()" />
+          </div>
+        </div>
+
+        <h3>1080×1350 미리보기</h3>
+        <div class="preview-grid" id="cardPreviews"></div>
+
+        <div class="download-all">
+          <button class="blue" onclick="downloadAllCards()">전체 PNG 저장</button>
+          <button class="secondary" onclick="copyResult()">수정 문구 복사</button>
+        </div>
+      `;
+
+      renderCardEditors();
+      renderTemplateButtons();
+      renderCardPreviews();
+    }
+
+    function renderCardEditors() {
+      const editor = document.getElementById("cardEditors");
+      editor.innerHTML = cardNewsData.map((card, index) => `
+        <div class="edit-item">
+          <div class="edit-item-title">${index + 1}장</div>
+          <label>제목</label>
+          <textarea oninput="updateCardText(${index}, 'title', this.value)">${escapeHtml(card.title)}</textarea>
+          <label style="margin-top:10px;">본문</label>
+          <textarea oninput="updateCardText(${index}, 'body', this.value)">${escapeHtml(card.body)}</textarea>
+          <label style="margin-top:10px;">이미지 추가</label>
+          <input type="file" accept="image/*" onchange="handleCardImageUpload(event, ${index})" />
+          <div class="image-controls">
+            <div>
+              <label>이미지 방식</label>
+              <select onchange="changeCardImageFit(${index}, this.value)">
+                <option value="cover" ${card.imageFit === "cover" ? "selected" : ""}>채우기</option>
+                <option value="contain" ${card.imageFit === "contain" ? "selected" : ""}>맞추기</option>
+                <option value="original" ${card.imageFit === "original" ? "selected" : ""}>원본비율</option>
+              </select>
+            </div>
+            <button class="danger" onclick="removeCardImage(${index})">이미지 제거</button>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function renderTemplateButtons() {
+      const grid = document.getElementById("templateGrid");
+      grid.innerHTML = Object.entries(templates).map(([key, tpl]) => `
+        <div class="template-btn ${selectedTemplate === key ? "active" : ""}" onclick="selectTemplate('${key}')">
+          <strong>${tpl.name}</strong>
+          <span>${tpl.desc}</span>
+        </div>
+      `).join("");
+    }
+
+    function selectTemplate(key) {
+      selectedTemplate = key;
+      renderTemplateButtons();
+      renderCardPreviews();
+    }
+
+    function changeTitleSize(value) {
+      titleSize = Number(value);
+      document.getElementById("titleSizeText").textContent = titleSize + "px";
+      renderCardPreviews();
+    }
+
+    function changeBodySize(value) {
+      bodySize = Number(value);
+      document.getElementById("bodySizeText").textContent = bodySize + "px";
+      renderCardPreviews();
+    }
+
+    function updateCardText(index, field, value) {
+      cardNewsData[index][field] = value;
+      updatePlainCardText();
+      renderCardPreviews();
+    }
+
+    function updatePlainCardText() {
+      lastPlainText = cardNewsData.map((card, index) =>
+        `[${index + 1}장]\n제목: ${card.title}\n본문: ${card.body}`
+      ).join("\n\n");
+    }
+
+    function handleWatermarkUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = e => {
+        watermarkDataUrl = e.target.result;
+        renderCardPreviews();
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function toggleWatermark() {
+      watermarkEnabled = document.getElementById("watermarkEnabled").checked;
+      renderCardPreviews();
+    }
+
+    function changeWatermarkOpacity() {
+      watermarkOpacity = Number(document.getElementById("watermarkOpacity").value);
+      document.getElementById("watermarkOpacityText").textContent = watermarkOpacity + "%";
+      renderCardPreviews();
+    }
+
+    function handleCardImageUpload(event, index) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = e => {
+        cardNewsData[index].image = e.target.result;
+        renderCardPreviews();
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function changeCardImageFit(index, value) {
+      cardNewsData[index].imageFit = value;
+      renderCardPreviews();
+    }
+
+    function removeCardImage(index) {
+      cardNewsData[index].image = "";
+      renderCardPreviews();
+    }
+
+    function renderCardPreviews() {
+      const preview = document.getElementById("cardPreviews");
+      if (!preview) return;
+
+      preview.innerHTML = cardNewsData.map((card, index) => `
+        <div class="preview-item">
+          ${buildCardHTML(card, index, false)}
+          <button class="secondary" style="width:100%; margin-top:10px;" onclick="downloadSingleCard(${index})">${index + 1}장 PNG 저장</button>
+        </div>
+      `).join("");
+    }
+
+    function buildCardHTML(card, index, outputSize) {
+      const tpl = templates[selectedTemplate];
+      const wmClass = watermarkEnabled && watermarkDataUrl ? "wm-on" : "";
+      const outputClass = outputSize ? "output-size" : "";
+      const imageClass = card.image ? "has-card-image" : "";
+      const wmOpacityStyle = `opacity:${watermarkOpacity / 100}`;
+      const previewTitle = titleSize / 5;
+      const previewBody = bodySize / 4.35;
+      const fitClass = card.imageFit === "contain" ? "image-fit-contain" : card.imageFit === "original" ? "image-fit-original" : "image-fit-cover";
+
+      return `
+        <div
+          class="ig-card ${outputClass} ${tpl.className} ${wmClass} ${imageClass}"
+          id="${outputSize ? `render-card-${index}` : `preview-card-${index}`}"
+          style="--output-title-size:${titleSize}px; --output-body-size:${bodySize}px; --preview-title-size:${previewTitle}px; --preview-body-size:${previewBody}px;"
+        >
+          ${card.image ? `<div class="card-image"><img class="${fitClass}" src="${card.image}" /></div>` : ""}
+          <div class="ig-number">${String(index + 1).padStart(2, "0")}</div>
+          <div class="ig-title">${escapeHtml(card.title)}</div>
+          <div class="ig-body">${escapeHtml(card.body)}</div>
+          ${watermarkDataUrl ? `<img class="watermark" style="${wmOpacityStyle}" src="${watermarkDataUrl}" />` : ""}
+        </div>
+      `;
+    }
+
+    async function downloadSingleCard(index) {
+      const area = document.getElementById("hiddenRenderArea");
+      area.innerHTML = buildCardHTML(cardNewsData[index], index, true);
+
+      const card = document.getElementById(`render-card-${index}`);
+      const canvas = await html2canvas(card, {
+        width: 1080,
+        height: 1350,
+        scale: 1,
+        backgroundColor: null,
+        useCORS: true
+      });
+
+      const a = document.createElement("a");
+      a.download = `cardnews-${String(index + 1).padStart(2, "0")}.png`;
+      a.href = canvas.toDataURL("image/png");
+      a.click();
+
+      area.innerHTML = "";
+    }
+
+    async function downloadAllCards() {
+      for (let i = 0; i < cardNewsData.length; i++) {
+        await downloadSingleCard(i);
+        await new Promise(resolve => setTimeout(resolve, 250));
+      }
+    }
+
+    function renderInstagram(data) {
+      const hashtags = Array.isArray(data.hashtags) ? data.hashtags : [];
+
+      lastPlainText =
+`${data.caption || ""}
+
+${hashtags.map(tag => tag.startsWith("#") ? tag : "#" + tag).join(" ")}`;
+
+      document.getElementById("result").innerHTML = `
+        <div class="content-card">
+          <b>인스타 설명글</b>
+          <p>${escapeHtml(data.caption || "")}</p>
+          <div class="hashtags">
+            ${hashtags.map(tag => `<span class="hashtag">${escapeHtml(tag.startsWith("#") ? tag : "#" + tag)}</span>`).join("")}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderBlog(data) {
+      lastPlainText =
+`${data.title || ""}
+
+[도입부]
+${data.intro || ""}
+
+[본문]
+${data.body || ""}
+
+[마무리]
+${data.conclusion || ""}`;
+
+      document.getElementById("result").innerHTML = `
+        <div class="content-card">
+          <b>블로그</b>
+          <h2 class="blog-title">${escapeHtml(data.title || "")}</h2>
+          <h4 class="section-title">도입부</h4>
+          <p>${escapeHtml(data.intro || "")}</p>
+          <h4 class="section-title">본문</h4>
+          <p>${escapeHtml(data.body || "")}</p>
+          <h4 class="section-title">마무리</h4>
+          <p>${escapeHtml(data.conclusion || "")}</p>
+        </div>
+      `;
+    }
+
+    function renderThreads(posts) {
+      lastPlainText = posts.map((item, index) =>
+        `${index + 1}/${posts.length}\n${item.post}`
+      ).join("\n\n");
+
+      document.getElementById("result").innerHTML =
+        posts.map((item, index) => `
+          <div class="content-card">
+            <b>${index + 1}번째 스레드</b>
+            <p>${escapeHtml(item.post)}</p>
+          </div>
+        `).join("");
+    }
+
+    function renderRaw(raw) {
+      lastPlainText = raw;
+      document.getElementById("result").innerHTML =
+        `<div class="text-output">${escapeHtml(raw)}</div>`;
+    }
+
+    function copyResult() {
+      if (!lastPlainText) {
+        alert("복사할 결과가 없습니다.");
+        return;
+      }
+
+      navigator.clipboard.writeText(lastPlainText)
+        .then(() => alert("결과를 복사했습니다."));
+    }
+
+    function clearResult() {
+      lastPlainText = "";
+      cardNewsData = [];
+      document.getElementById("result").innerHTML = `
+        <div class="empty">
+          왼쪽에서 주제와 콘텐츠 유형을 선택한 뒤<br />
+          생성하기 버튼을 눌러주세요.
+        </div>
+      `;
+      setStatus("");
+    }
+
+    function setStatus(message) {
+      document.getElementById("status").textContent = message;
+    }
+
+    function escapeHtml(text) {
+      return String(text || "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function escapeAttr(text) {
+      return String(text || "")
+        .replaceAll("&", "&amp;")
+        .replaceAll('"', "&quot;");
+    }
+  </script>
+</body>
+</html>
