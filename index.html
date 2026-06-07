@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>청새치 콘텐츠 생성기 v5</title>
+  <title>청새치 콘텐츠 생성기 v6</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
     * { box-sizing: border-box; }
@@ -408,9 +408,10 @@
     .ig-title {
       white-space: pre-line;
       font-weight: 950;
-      letter-spacing: -0.075em;
-      line-height: 1.15;
-      font-size: var(--preview-title-size, 31px);
+      letter-spacing: -0.04em;
+      line-height: 1.12;
+      font-size: var(--preview-title-size, 18px);
+      color: var(--title-color, #111111);
       position: relative;
       z-index: 2;
     }
@@ -421,7 +422,7 @@
       white-space: pre-line;
       font-size: var(--preview-body-size, 13px);
       line-height: 1.5;
-      color: #444;
+      color: var(--body-color, #444444);
       font-weight: 650;
       position: relative;
       z-index: 2;
@@ -601,6 +602,158 @@
 
     .output-size.template-paper .ig-title { margin-top:170px; }
 
+
+    .conditional-input { display:none; margin-top:8px; }
+    .conditional-input.show { display:block; }
+
+    .template-x {
+      background:#ffffff;
+      color:#111827;
+    }
+
+    .template-x::before {
+      content:"@cshchi";
+      position:absolute;
+      top:22px;
+      left:22px;
+      font-size:13px;
+      font-weight:900;
+      color:#111827;
+      z-index:2;
+    }
+
+    .output-size.template-x::before {
+      top:88px;
+      left:110px;
+      font-size:52px;
+    }
+
+    .template-x .ig-title { margin-top:38px; }
+    .output-size.template-x .ig-title { margin-top:150px; }
+
+    .template-talk {
+      background:#bacee0;
+      color:#111827;
+      justify-content:flex-start;
+      gap:14px;
+    }
+
+    .template-talk .ig-title,
+    .template-talk .ig-body {
+      background:#fff;
+      border-radius:16px;
+      padding:12px 14px;
+      letter-spacing:-0.04em;
+      width:92%;
+    }
+
+    .template-talk .ig-title { align-self:flex-start; }
+    .template-talk .ig-body { align-self:flex-end; background:#ffe85c; }
+    .output-size.template-talk .ig-title,
+    .output-size.template-talk .ig-body { border-radius:70px; padding:55px 64px; }
+
+    .template-notion {
+      background:#fbfbfa;
+      color:#111827;
+    }
+
+    .template-notion::before {
+      content:"▦ Notion";
+      position:absolute;
+      top:22px;
+      left:22px;
+      font-size:13px;
+      font-weight:900;
+      color:#6b7280;
+      z-index:2;
+    }
+
+    .output-size.template-notion::before { top:88px; left:110px; font-size:52px; }
+    .template-notion .ig-title { margin-top:42px; }
+    .output-size.template-notion .ig-title { margin-top:160px; }
+
+    .template-mac {
+      background:#eceff4;
+      color:#111827;
+      padding-top:46px;
+    }
+
+    .template-mac::before {
+      content:"";
+      position:absolute;
+      top:18px;
+      left:22px;
+      width:12px;
+      height:12px;
+      border-radius:50%;
+      background:#ff5f57;
+      box-shadow:20px 0 0 #febc2e, 40px 0 0 #28c840;
+      z-index:3;
+    }
+
+    .template-mac::after {
+      content:"";
+      position:absolute;
+      inset:14px;
+      border:1px solid rgba(0,0,0,.12);
+      border-radius:18px;
+      background:rgba(255,255,255,.42);
+      z-index:1;
+      pointer-events:none;
+    }
+
+    .output-size.template-mac { padding-top:220px; }
+    .output-size.template-mac::before { top:78px; left:110px; width:46px; height:46px; box-shadow:78px 0 0 #febc2e, 156px 0 0 #28c840; }
+    .output-size.template-mac::after { inset:70px; border-radius:80px; }
+
+    .template-board {
+      background:#1f4d3a;
+      color:#f8fafc;
+      box-shadow: inset 0 0 0 12px rgba(130,83,45,.75);
+    }
+
+    .template-board .ig-title,
+    .template-board .ig-body { color:#f8fafc; }
+    .template-board::before {
+      content:"TODAY'S NOTE";
+      position:absolute;
+      top:24px;
+      left:26px;
+      font-size:11px;
+      font-weight:900;
+      color:rgba(255,255,255,.7);
+      z-index:2;
+    }
+    .output-size.template-board { box-shadow: inset 0 0 0 56px rgba(130,83,45,.75); }
+    .output-size.template-board::before { top:115px; left:130px; font-size:42px; }
+
+    .template-browser {
+      background:#f8fafc;
+      color:#111827;
+      padding-top:58px;
+    }
+
+    .template-browser::before {
+      content:"🔴 🟡 🟢   ◀  ▶  ⟳   https://homepage.com";
+      position:absolute;
+      top:0;
+      left:0;
+      right:0;
+      height:42px;
+      padding:13px 18px;
+      background:#e5e7eb;
+      border-bottom:1px solid rgba(0,0,0,.10);
+      font-size:10px;
+      font-weight:800;
+      color:#374151;
+      z-index:3;
+      white-space:nowrap;
+      overflow:hidden;
+    }
+
+    .output-size.template-browser { padding-top:280px; }
+    .output-size.template-browser::before { height:170px; padding:54px 90px; font-size:42px; }
+
     .hidden-render-area {
       position: fixed;
       left: -99999px;
@@ -643,8 +796,8 @@
   <main class="app">
     <section class="hero">
       <div class="badge">CHEONGSAECHI CONTENT STUDIO</div>
-      <h1>청새치 콘텐츠 생성기 v5</h1>
-      <p>DB 선택 생성, 임시 생성, 저장 생성, 수정 저장을 지원합니다. AI 추가 요청사항은 이번 생성에만 적용됩니다.</p>
+      <h1>청새치 콘텐츠 생성기 v6</h1>
+      <p>아이디어 입력, AI 추천, 분량 선택, 직접 목표/톤/구조 입력, 11종 카드뉴스 템플릿을 지원합니다.</p>
     </section>
 
     <section class="layout">
@@ -678,41 +831,44 @@
         <div class="row">
           <div class="form-group">
             <label for="contentGoal">콘텐츠 목표</label>
-            <select id="contentGoal">
-              <option value="브랜딩 · 나와 브랜드를 기억하게 만드는 방향">브랜딩</option>
-              <option value="상담 · 상담 문의나 DM을 보내고 싶게 만드는 방향">상담</option>
-              <option value="신뢰 · 전문성과 경험을 보여주어 신뢰를 높이는 방향">신뢰</option>
-              <option value="유입 · 더 많은 사람에게 노출되고 공유되기 쉬운 방향">유입</option>
-              <option value="저장 · 실질적인 정보를 제공해 저장을 유도하는 방향">저장</option>
+            <select id="contentGoal" onchange="toggleCustomInput('contentGoal', 'customContentGoal')">
+              <option value="알아서 해줘">알아서 해줘</option>
+              <option value="__custom__">직접 입력</option>
             </select>
+            <input id="customContentGoal" class="conditional-input" placeholder="예: 저장 유도, 댓글 유도, 상담 유도" />
           </div>
 
           <div class="form-group">
             <label for="tone">톤</label>
-            <select id="tone">
-              <option value="친근하지만 전문적으로">친근하지만 전문적으로</option>
-              <option value="담백하게">담백하게</option>
-              <option value="직설적으로">직설형</option>
-              <option value="스토리텔링식으로">스토리텔링형</option>
-              <option value="칼럼형 · 경험과 근거를 바탕으로 신뢰감 있게 설명">칼럼형</option>
-              <option value="체크리스트형 · 핵심 내용을 목록으로 정리해 이해를 돕기">체크리스트형</option>
-              <option value="논쟁형 · 사람들이 흔히 하는 오해를 깨는 방식">논쟁형</option>
-              <option value="후킹강조형 · 첫 문장에서 강한 충격이나 공감을 주고 끝까지 읽게 만들기">후킹강조형</option>
-              <option value="후킹통찰형 · 사람들이 무심코 지나치던 문제를 날카롭게 찔러 관심을 끌기">후킹통찰형</option>
-              <option value="공감형 · 독자가 자신의 이야기라고 느끼게 만들기">공감형</option>
+            <select id="tone" onchange="toggleCustomInput('tone', 'customTone')">
+              <option value="알아서 해줘">알아서 해줘</option>
+              <option value="__custom__">직접 입력</option>
             </select>
+            <input id="customTone" class="conditional-input" placeholder="예: 친구처럼, 전문적으로, SNS 감성" />
           </div>
         </div>
 
-        <div class="form-group">
-          <label for="framework">구조</label>
-          <select id="framework">
-            <option value="문제-원인-해결">문제-원인-해결 · 제일 무난한 설명형</option>
-            <option value="PAS">PAS · 문제를 찌르고 해결로 연결</option>
-            <option value="AIDA">AIDA · 관심을 끌고 행동까지 유도</option>
-            <option value="BAB">BAB · 변화 전/후를 보여주는 방식</option>
-            <option value="스토리텔링">스토리텔링 · 경험담처럼 풀어내기</option>
-          </select>
+        <div class="row">
+          <div class="form-group">
+            <label for="framework">구조</label>
+            <select id="framework" onchange="toggleCustomInput('framework', 'customFramework')">
+              <option value="알아서 해줘">알아서 해줘</option>
+              <option value="__custom__">직접 입력</option>
+            </select>
+            <input id="customFramework" class="conditional-input" placeholder="예: 문제→원인→해결, 경험→깨달음→적용" />
+          </div>
+
+          <div class="form-group">
+            <label for="contentLength">분량</label>
+            <select id="contentLength" onchange="toggleCustomInput('contentLength', 'customLength')">
+              <option value="AI 추천">AI 추천</option>
+              <option value="짧게">짧게</option>
+              <option value="보통">보통</option>
+              <option value="길게">길게</option>
+              <option value="직접 입력">직접 입력</option>
+            </select>
+            <input id="customLength" class="conditional-input" placeholder="예: 카드뉴스 8장, 스레드 6개" />
+          </div>
         </div>
 
         <div class="form-group">
@@ -724,25 +880,19 @@
           <h3 style="margin-top:0;">직접 입력 / 수정</h3>
           <input type="hidden" id="manualId" />
 
-          <div class="row">
-            <div class="form-group">
-              <label for="manualCategory">카테고리</label>
-              <input id="manualCategory" placeholder="예: 웹사이트" />
-            </div>
-            <div class="form-group">
-              <label for="manualStatus">상태</label>
-              <select id="manualStatus">
-                <option value="대기">대기</option>
-                <option value="작성중">작성중</option>
-                <option value="완료">완료</option>
-                <option value="보류">보류</option>
-              </select>
-            </div>
+          <div class="form-group">
+            <label for="manualCategorySelect">카테고리</label>
+            <select id="manualCategorySelect" onchange="toggleManualCategoryInput()"></select>
+            <input id="manualCategoryCustom" class="conditional-input" placeholder="예: 웹사이트" />
           </div>
 
           <div class="form-group">
-            <label for="manualTopic">주제</label>
-            <input id="manualTopic" placeholder="예: 예쁜 홈페이지인데 문의가 없는 이유" />
+            <label for="manualTopic">아이디어</label>
+            <div class="row">
+              <input id="manualTopic" placeholder="예: 예쁜 홈페이지 문의 없음" />
+              <button class="secondary" type="button" onclick="suggestIdea()">AI 추천</button>
+            </div>
+            <div class="small-help">거친 아이디어를 입력한 뒤 AI 추천을 누르면 주제와 빈칸을 자동으로 채웁니다.</div>
           </div>
 
           <div class="form-group">
@@ -758,7 +908,7 @@
           </div>
 
           <div class="form-group">
-            <label for="manualRequired">반드시포함</label>
+            <label for="manualRequired">반드시 포함할 내용</label>
             <input id="manualRequired" placeholder="예: 구조,전환,CTA" />
           </div>
 
@@ -808,8 +958,8 @@
 
         <div id="result">
           <div class="empty">
-            왼쪽에서 주제와 콘텐츠 유형을 선택한 뒤<br />
-            생성하기 버튼을 눌러주세요.
+            DB에서 주제를 선택하거나 아이디어를 입력한 뒤<br />
+            생성 버튼을 눌러주세요.
           </div>
         </div>
       </section>
@@ -819,7 +969,7 @@
   <div id="hiddenRenderArea" class="hidden-render-area"></div>
 
   <script>
-    const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbwIz8EbtrxM9Ss4G3rLteVQ45ZhN8gtrKfE1KiuiQBK8XgPp2noMu-6ZSRmAJrtbdU8/exec";
+    const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbxQjujcDKVQ8Z0DBNRoEp4ASiboER2kMCROaH15aeU_Bgk7VJMz43CLH6DerrN9z7Hn/exec";
     const GENERATE_API_URL = "https://cardnews-maker-lyart.vercel.app/api/generate";
 
     const templates = {
@@ -827,7 +977,13 @@
       memo: { name: "메모장형", desc: "노란 메모지", className: "template-memo" },
       ios: { name: "iOS형", desc: "아이폰 메모 느낌", className: "template-ios" },
       news: { name: "뉴스형", desc: "속보·강조형", className: "template-news" },
-      paper: { name: "신문형", desc: "[속보] 신문 칼럼형", className: "template-paper" }
+      paper: { name: "신문형", desc: "[속보] 신문 칼럼형", className: "template-paper" },
+      x: { name: "X 캡처형", desc: "@cshchi 포스트 느낌", className: "template-x" },
+      talk: { name: "카톡 대화형", desc: "대화 캡처 느낌", className: "template-talk" },
+      notion: { name: "노션형", desc: "문서·체크리스트 느낌", className: "template-notion" },
+      mac: { name: "맥 팝업형", desc: "macOS 팝업창 UI", className: "template-mac" },
+      board: { name: "칠판형", desc: "강의·교육 콘텐츠", className: "template-board" },
+      browser: { name: "브라우저형", desc: "https://homepage.com", className: "template-browser" }
     };
 
     let contentDB = [];
@@ -838,8 +994,10 @@
     let watermarkDataUrl = "";
     let watermarkEnabled = true;
     let watermarkOpacity = 28;
-    let titleSize = 155;
-    let bodySize = 58;
+    let titleSize = 90;
+    let bodySize = 50;
+    let titleColor = "#111111";
+    let bodyColor = "#444444";
 
     window.addEventListener("DOMContentLoaded", loadContentDB);
 
@@ -867,7 +1025,19 @@
         .map(category => `<option value="${escapeAttr(category)}">${escapeHtml(category)}</option>`)
         .join("");
 
+      renderManualCategoryOptions(categories);
       onCategoryChange();
+    }
+
+    function renderManualCategoryOptions(categories) {
+      const select = document.getElementById("manualCategorySelect");
+      if (!select) return;
+
+      select.innerHTML = [`<option value="__custom__">직접 입력</option>`]
+        .concat(categories.map(category => `<option value="${escapeAttr(category)}">${escapeHtml(category)}</option>`))
+        .join("");
+
+      toggleManualCategoryInput();
     }
 
     function onCategoryChange() {
@@ -923,7 +1093,7 @@
     function loadSelectedToManual() {
       if (!selectedItem) return alert("불러올 DB 주제를 먼저 선택해주세요.");
       document.getElementById("manualId").value = selectedItem["ID"] || "";
-      document.getElementById("manualCategory").value = selectedItem["카테고리"] || "";
+      setManualCategory(selectedItem["카테고리"] || "");
       document.getElementById("manualTopic").value = selectedItem["주제"] || "";
       document.getElementById("manualCore").value = selectedItem["핵심메시지"] || "";
       document.getElementById("manualEvidence1").value = selectedItem["근거1"] || "";
@@ -931,15 +1101,98 @@
       document.getElementById("manualEvidence3").value = selectedItem["근거3"] || "";
       document.getElementById("manualRequired").value = selectedItem["반드시포함"] || "";
       document.getElementById("manualForbidden").value = selectedItem["금지내용"] || "";
-      document.getElementById("manualStatus").value = selectedItem["상태"] || "대기";
       document.getElementById("manualMemo").value = selectedItem["메모"] || "";
       setStatus("선택한 DB 내용을 입력칸에 불러왔습니다.");
+    }
+
+    function setManualCategory(category) {
+      const select = document.getElementById("manualCategorySelect");
+      const custom = document.getElementById("manualCategoryCustom");
+      if (!select || !custom) return;
+
+      const options = Array.from(select.options).map(option => option.value);
+      if (options.includes(category)) {
+        select.value = category;
+        custom.value = "";
+      } else {
+        select.value = "__custom__";
+        custom.value = category;
+      }
+      toggleManualCategoryInput();
+    }
+
+    function toggleManualCategoryInput() {
+      const select = document.getElementById("manualCategorySelect");
+      const custom = document.getElementById("manualCategoryCustom");
+      if (!select || !custom) return;
+      custom.classList.toggle("show", select.value === "__custom__");
+    }
+
+    function getManualCategory() {
+      const select = document.getElementById("manualCategorySelect");
+      const custom = document.getElementById("manualCategoryCustom");
+      if (!select) return "";
+      if (select.value === "__custom__") return (custom?.value || "").trim();
+      return select.value.trim();
+    }
+
+    function getOptionValue(selectId, inputId) {
+      const select = document.getElementById(selectId);
+      const input = document.getElementById(inputId);
+      if (!select) return "알아서 해줘";
+      if (select.value === "__custom__") return (input?.value || "").trim() || "알아서 해줘";
+      return select.value;
+    }
+
+    function toggleCustomInput(selectId, inputId) {
+      const select = document.getElementById(selectId);
+      const input = document.getElementById(inputId);
+      if (!select || !input) return;
+      input.classList.toggle("show", select.value === "__custom__" || select.value === "직접 입력");
+    }
+
+    async function suggestIdea() {
+      const rawIdea = document.getElementById("manualTopic").value.trim();
+      if (!rawIdea) return alert("아이디어를 먼저 입력해주세요.");
+
+      setStatus("AI가 아이디어를 정리하는 중...");
+      try {
+        const res = await fetch(GENERATE_API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            mode: "idea",
+            rawIdea,
+            brand: document.getElementById("brand").value,
+            categoryHint: getManualCategory(),
+            extraPrompt: document.getElementById("extraPrompt").value.trim()
+          })
+        });
+
+        const data = await res.json();
+        if (data.error) throw new Error(data.error);
+
+        const suggestion = safeJsonParse(data.result);
+        setManualCategory(suggestion.category || "");
+        document.getElementById("manualTopic").value = suggestion.topic || rawIdea;
+        document.getElementById("manualCore").value = suggestion.coreMessage || "";
+        document.getElementById("manualEvidence1").value = suggestion.evidence1 || "";
+        document.getElementById("manualEvidence2").value = suggestion.evidence2 || "";
+        document.getElementById("manualEvidence3").value = suggestion.evidence3 || "";
+        document.getElementById("manualRequired").value = suggestion.requiredKeywords || "";
+        document.getElementById("manualForbidden").value = suggestion.forbiddenTopics || "";
+        document.getElementById("manualMemo").value = suggestion.memo || "";
+        setStatus("AI 추천 완료. 내용을 확인한 뒤 임시 생성 또는 저장 생성을 눌러주세요.");
+      } catch (error) {
+        alert("AI 추천 실패: " + error.message);
+        setStatus("AI 추천 실패");
+      }
     }
 
     function getManualItem() {
       return {
         "ID": document.getElementById("manualId").value.trim(),
-        "카테고리": document.getElementById("manualCategory").value.trim(),
+        "카테고리": getManualCategory(),
         "주제": document.getElementById("manualTopic").value.trim(),
         "핵심메시지": document.getElementById("manualCore").value.trim(),
         "근거1": document.getElementById("manualEvidence1").value.trim(),
@@ -947,7 +1200,7 @@
         "근거3": document.getElementById("manualEvidence3").value.trim(),
         "반드시포함": document.getElementById("manualRequired").value.trim(),
         "금지내용": document.getElementById("manualForbidden").value.trim(),
-        "상태": document.getElementById("manualStatus").value,
+        "상태": "대기",
         "메모": document.getElementById("manualMemo").value.trim(),
         "카드뉴스": true,
         "인스타설명글": true,
@@ -1039,9 +1292,11 @@
         memo: item["메모"],
         extraPrompt: document.getElementById("extraPrompt").value.trim(),
         contentType,
-        contentGoal: document.getElementById("contentGoal").value,
-        tone: document.getElementById("tone").value,
-        framework: getFrameworkValue(),
+        contentGoal: getOptionValue("contentGoal", "customContentGoal"),
+        tone: getOptionValue("tone", "customTone"),
+        framework: getOptionValue("framework", "customFramework"),
+        contentLength: document.getElementById("contentLength").value,
+        customLength: document.getElementById("customLength").value.trim(),
         brand: document.getElementById("brand").value
       };
 
@@ -1118,21 +1373,29 @@
         <h3>디자인 템플릿</h3>
         <div class="template-grid" id="templateGrid"></div>
 
-        <h3>텍스트 크기</h3>
+        <h3>텍스트 설정</h3>
         <div class="control-grid">
           <div class="control-box">
             <div class="range-label">
               <span>제목 크기</span>
               <span id="titleSizeText">${titleSize}px</span>
             </div>
-            <input type="range" min="90" max="190" value="${titleSize}" oninput="changeTitleSize(this.value)" />
+            <input type="range" min="60" max="190" value="${titleSize}" oninput="changeTitleSize(this.value)" />
           </div>
           <div class="control-box">
             <div class="range-label">
               <span>본문 크기</span>
               <span id="bodySizeText">${bodySize}px</span>
             </div>
-            <input type="range" min="34" max="84" value="${bodySize}" oninput="changeBodySize(this.value)" />
+            <input type="range" min="30" max="84" value="${bodySize}" oninput="changeBodySize(this.value)" />
+          </div>
+          <div class="control-box">
+            <div class="range-label"><span>제목 색상</span><span id="titleColorText">${titleColor}</span></div>
+            <input type="color" value="${titleColor}" oninput="changeTitleColor(this.value)" />
+          </div>
+          <div class="control-box">
+            <div class="range-label"><span>본문 색상</span><span id="bodyColorText">${bodyColor}</span></div>
+            <input type="color" value="${bodyColor}" oninput="changeBodyColor(this.value)" />
           </div>
         </div>
 
@@ -1220,6 +1483,18 @@
       renderCardPreviews();
     }
 
+    function changeTitleColor(value) {
+      titleColor = value;
+      document.getElementById("titleColorText").textContent = value;
+      renderCardPreviews();
+    }
+
+    function changeBodyColor(value) {
+      bodyColor = value;
+      document.getElementById("bodyColorText").textContent = value;
+      renderCardPreviews();
+    }
+
     function updateCardText(index, field, value) {
       cardNewsData[index][field] = value;
       updatePlainCardText();
@@ -1303,7 +1578,7 @@
         <div
           class="ig-card ${outputClass} ${tpl.className} ${wmClass} ${imageClass}"
           id="${outputSize ? `render-card-${index}` : `preview-card-${index}`}"
-          style="--output-title-size:${titleSize}px; --output-body-size:${bodySize}px; --preview-title-size:${previewTitle}px; --preview-body-size:${previewBody}px;"
+          style="--output-title-size:${titleSize}px; --output-body-size:${bodySize}px; --preview-title-size:${previewTitle}px; --preview-body-size:${previewBody}px; --title-color:${titleColor}; --body-color:${bodyColor};"
         >
           ${card.image ? `<div class="card-image"><img class="${fitClass}" src="${card.image}" /></div>` : ""}
           <div class="ig-number">${String(index + 1).padStart(2, "0")}</div>
