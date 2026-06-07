@@ -31,6 +31,7 @@ export default async function handler(req, res) {
       requiredKeywords,
       forbiddenTopics,
       memo,
+      extraPrompt,
       contentType,
       contentGoal,
       tone,
@@ -44,9 +45,9 @@ export default async function handler(req, res) {
       .join("\n");
 
     const prompt = `
-너는 '청새치웹'의 콘텐츠 기획자이자 카피라이터다.
+너는 '${brand || "청새치웹"}'의 콘텐츠 기획자이자 카피라이터다.
 
-아래 콘텐츠 DB 정보를 바탕으로 사용자가 선택한 플랫폼에 맞는 게시물을 작성해라.
+아래 콘텐츠 DB 정보와 생성 옵션을 바탕으로 사용자가 선택한 플랫폼에 맞는 게시물을 작성해라.
 
 [콘텐츠 DB]
 - ID: ${id || ""}
@@ -66,6 +67,9 @@ ${evidenceList || "없음"}
 - 톤: ${tone || "친근하지만 구조적으로 설명"}
 - 구조: ${framework || "문제-원인-해결"}
 
+[AI 추가 요청사항]
+${extraPrompt || "없음"}
+
 [공통 작성 원칙]
 - 한국어로 작성한다.
 - 과장 표현은 피한다.
@@ -73,6 +77,7 @@ ${evidenceList || "없음"}
 - 핵심메시지를 반드시 반영한다.
 - 반드시 포함할 내용/키워드는 자연스럽게 반영한다.
 - 피해야 할 내용/키워드는 언급하지 않는다.
+- AI 추가 요청사항이 있으면 이번 생성 결과에 우선적으로 반영한다.
 - 청새치웹의 관점은 "감각보다 구조", "예쁨보다 흐름", "전환을 만드는 설계"에 가깝다.
 - 사용자가 바로 복사해서 쓸 수 있게 작성한다.
 
