@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>청새치 콘텐츠 생성기 v3</title>
+  <title>청새치 콘텐츠 생성기 v5</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
     * { box-sizing: border-box; }
@@ -136,6 +136,25 @@
       color: #555;
       white-space: pre-wrap;
     }
+
+
+
+    .mode-box, .manual-box {
+      background:#fbfcfe;
+      border:1px solid #edf0f5;
+      border-radius:18px;
+      padding:16px;
+      margin-bottom:16px;
+    }
+
+    .small-help {
+      font-size:12px;
+      color:#777;
+      line-height:1.5;
+      margin-top:8px;
+    }
+
+    .green { background:#16a34a; color:#fff; }
 
     .status {
       margin-top: 12px;
@@ -624,22 +643,26 @@
   <main class="app">
     <section class="hero">
       <div class="badge">CHEONGSAECHI CONTENT STUDIO</div>
-      <h1>청새치 콘텐츠 생성기 v3</h1>
-      <p>카드뉴스는 문구 수정·템플릿·글자 크기·카드별 이미지·워터마크·1080×1350 PNG 저장을 지원합니다.</p>
+      <h1>청새치 콘텐츠 생성기 v5</h1>
+      <p>DB 선택 생성, 임시 생성, 저장 생성, 수정 저장을 지원합니다. AI 추가 요청사항은 이번 생성에만 적용됩니다.</p>
     </section>
 
     <section class="layout">
       <aside class="panel">
         <h2>생성 설정</h2>
 
-        <div class="form-group">
-          <label for="categorySelect">카테고리</label>
-          <select id="categorySelect" onchange="onCategoryChange()"></select>
-        </div>
+        <div class="mode-box">
+          <div class="form-group">
+            <label for="categorySelect">DB 카테고리</label>
+            <select id="categorySelect" onchange="onCategoryChange()"></select>
+          </div>
 
-        <div class="form-group">
-          <label for="topicSelect">주제</label>
-          <select id="topicSelect" onchange="onTopicChange()"></select>
+          <div class="form-group">
+            <label for="topicSelect">DB 주제</label>
+            <select id="topicSelect" onchange="onTopicChange()"></select>
+          </div>
+
+          <button class="secondary" style="width:100%;" onclick="loadSelectedToManual()">선택 DB를 입력칸에 불러오기</button>
         </div>
 
         <div class="form-group">
@@ -656,25 +679,11 @@
           <div class="form-group">
             <label for="contentGoal">콘텐츠 목표</label>
             <select id="contentGoal">
-              <option value="브랜딩 · 나와 브랜드를 기억하게 만드는 방향">
-              브랜딩
-              </option>
-
-              <option value="상담 · 상담 문의나 DM을 보내고 싶게 만드는 방향">
-              상담
-              </option>
-
-              <option value="신뢰 · 전문성과 경험을 보여주어 신뢰를 높이는 방향">
-              신뢰
-              </option>
-
-              <option value="유입 · 더 많은 사람에게 노출되고 공유되기 쉬운 방향">
-              유입
-              </option>
-
-              <option value="저장 · 실질적인 정보를 제공해 저장을 유도하는 방향">
-              저장
-              </option>
+              <option value="브랜딩 · 나와 브랜드를 기억하게 만드는 방향">브랜딩</option>
+              <option value="상담 · 상담 문의나 DM을 보내고 싶게 만드는 방향">상담</option>
+              <option value="신뢰 · 전문성과 경험을 보여주어 신뢰를 높이는 방향">신뢰</option>
+              <option value="유입 · 더 많은 사람에게 노출되고 공유되기 쉬운 방향">유입</option>
+              <option value="저장 · 실질적인 정보를 제공해 저장을 유도하는 방향">저장</option>
             </select>
           </div>
 
@@ -685,12 +694,12 @@
               <option value="담백하게">담백하게</option>
               <option value="직설적으로">직설형</option>
               <option value="스토리텔링식으로">스토리텔링형</option>
-              <option value="칼럼형·경험과 근거를 바탕으로 신뢰감 있게 설명">칼럼형</option>
-              <option value="체크리스트형·핵심 내용을 목록으로 정리해 이해를 돕기">체크리스트형</option>
-              <option value="논쟁형·사람들이 흔히 하는 오해를 깨는 방식">논쟁형</option>
-              <option value="후킹강조형·첫 문장에서 강한 충격이나 공감을 주고 끝까지 읽게 만들기">후킹강조형</option>
-              <option value="후킹통찰형·사람들이 무심코 지나치던 문제를 날카롭게 찔러 관심을 끌기">후킹통찰형</option>
-              <option value="공감형·독자가 자신의 이야기라고 느끼게 만들기">공감형</option>
+              <option value="칼럼형 · 경험과 근거를 바탕으로 신뢰감 있게 설명">칼럼형</option>
+              <option value="체크리스트형 · 핵심 내용을 목록으로 정리해 이해를 돕기">체크리스트형</option>
+              <option value="논쟁형 · 사람들이 흔히 하는 오해를 깨는 방식">논쟁형</option>
+              <option value="후킹강조형 · 첫 문장에서 강한 충격이나 공감을 주고 끝까지 읽게 만들기">후킹강조형</option>
+              <option value="후킹통찰형 · 사람들이 무심코 지나치던 문제를 날카롭게 찔러 관심을 끌기">후킹통찰형</option>
+              <option value="공감형 · 독자가 자신의 이야기라고 느끼게 만들기">공감형</option>
             </select>
           </div>
         </div>
@@ -711,12 +720,79 @@
           <input id="brand" value="청새치웹" />
         </div>
 
+        <div class="manual-box">
+          <h3 style="margin-top:0;">직접 입력 / 수정</h3>
+          <input type="hidden" id="manualId" />
+
+          <div class="row">
+            <div class="form-group">
+              <label for="manualCategory">카테고리</label>
+              <input id="manualCategory" placeholder="예: 웹사이트" />
+            </div>
+            <div class="form-group">
+              <label for="manualStatus">상태</label>
+              <select id="manualStatus">
+                <option value="대기">대기</option>
+                <option value="작성중">작성중</option>
+                <option value="완료">완료</option>
+                <option value="보류">보류</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="manualTopic">주제</label>
+            <input id="manualTopic" placeholder="예: 예쁜 홈페이지인데 문의가 없는 이유" />
+          </div>
+
+          <div class="form-group">
+            <label for="manualCore">핵심메시지</label>
+            <textarea id="manualCore" placeholder="예: 구조가 잡혀 있지 않으면 문의가 발생하기 어렵다"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>근거</label>
+            <input id="manualEvidence1" placeholder="근거1" style="margin-bottom:8px;" />
+            <input id="manualEvidence2" placeholder="근거2" style="margin-bottom:8px;" />
+            <input id="manualEvidence3" placeholder="근거3" />
+          </div>
+
+          <div class="form-group">
+            <label for="manualRequired">반드시포함</label>
+            <input id="manualRequired" placeholder="예: 구조,전환,CTA" />
+          </div>
+
+          <div class="form-group">
+            <label for="manualForbidden">금지내용</label>
+            <input id="manualForbidden" placeholder="예: SEO,광고비" />
+          </div>
+
+          <div class="form-group">
+            <label for="manualMemo">메모 <span style="color:#777;">DB에 저장됨</span></label>
+            <textarea id="manualMemo" placeholder="예: 청새치웹 전환 관점 강조"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="extraPrompt">AI 추가 요청사항 <span style="color:#777;">이번 생성에만 적용</span></label>
+            <textarea id="extraPrompt" placeholder="예)\n- 후킹을 강하게 해주세요\n- 초보 사장님 기준으로 설명해주세요\n- 실제 사례를 넣어주세요\n- SEO 이야기는 제외해주세요"></textarea>
+          </div>
+
+          <div class="row">
+            <button class="secondary" onclick="generateTemporary()">임시 생성</button>
+            <button class="blue" onclick="saveAndGenerate()">저장 생성</button>
+          </div>
+          <button class="green" style="width:100%; margin-top:10px;" onclick="updateAndGenerate()">수정 저장</button>
+          <div class="small-help">
+            임시 생성은 DB에 저장하지 않습니다. 저장 생성은 새 행을 추가하고 생성합니다. 수정 저장은 현재 ID가 있는 항목을 업데이트합니다.
+          </div>
+        </div>
+
         <div class="form-group">
           <label>선택한 DB 내용</label>
           <div id="dbPreview" class="db-preview">DB를 불러오는 중...</div>
         </div>
 
-        <button class="primary" onclick="generateContent()">선택한 콘텐츠만 생성하기</button>
+        <button class="primary" onclick="generateFromSelectedDB()">DB 선택 주제로 생성하기</button>
         <div id="status" class="status"></div>
       </aside>
 
@@ -835,14 +911,110 @@
     }
 
     async function generateContent() {
-      if (!selectedItem) {
-        alert("주제를 먼저 선택해주세요.");
-        return;
-      }
+      return generateFromSelectedDB();
+    }
 
+
+
+    function loadSelectedToManual() {
+      if (!selectedItem) return alert("불러올 DB 주제를 먼저 선택해주세요.");
+      document.getElementById("manualId").value = selectedItem["ID"] || "";
+      document.getElementById("manualCategory").value = selectedItem["카테고리"] || "";
+      document.getElementById("manualTopic").value = selectedItem["주제"] || "";
+      document.getElementById("manualCore").value = selectedItem["핵심메시지"] || "";
+      document.getElementById("manualEvidence1").value = selectedItem["근거1"] || "";
+      document.getElementById("manualEvidence2").value = selectedItem["근거2"] || "";
+      document.getElementById("manualEvidence3").value = selectedItem["근거3"] || "";
+      document.getElementById("manualRequired").value = selectedItem["반드시포함"] || "";
+      document.getElementById("manualForbidden").value = selectedItem["금지내용"] || "";
+      document.getElementById("manualStatus").value = selectedItem["상태"] || "대기";
+      document.getElementById("manualMemo").value = selectedItem["메모"] || "";
+      setStatus("선택한 DB 내용을 입력칸에 불러왔습니다.");
+    }
+
+    function getManualItem() {
+      return {
+        "ID": document.getElementById("manualId").value.trim(),
+        "카테고리": document.getElementById("manualCategory").value.trim(),
+        "주제": document.getElementById("manualTopic").value.trim(),
+        "핵심메시지": document.getElementById("manualCore").value.trim(),
+        "근거1": document.getElementById("manualEvidence1").value.trim(),
+        "근거2": document.getElementById("manualEvidence2").value.trim(),
+        "근거3": document.getElementById("manualEvidence3").value.trim(),
+        "반드시포함": document.getElementById("manualRequired").value.trim(),
+        "금지내용": document.getElementById("manualForbidden").value.trim(),
+        "상태": document.getElementById("manualStatus").value,
+        "메모": document.getElementById("manualMemo").value.trim(),
+        "카드뉴스": true,
+        "인스타설명글": true,
+        "블로그": true,
+        "스레드": true
+      };
+    }
+
+    function validateManualItem(item) {
+      if (!item["카테고리"]) return "카테고리를 입력해주세요.";
+      if (!item["주제"]) return "주제를 입력해주세요.";
+      if (!item["핵심메시지"]) return "핵심메시지를 입력해주세요.";
+      return "";
+    }
+
+    async function generateTemporary() {
+      const item = getManualItem();
+      const error = validateManualItem(item);
+      if (error) return alert(error);
+      await generateByItem(item);
+    }
+
+    async function saveAndGenerate() {
+      const item = getManualItem();
+      item["ID"] = "";
+      const error = validateManualItem(item);
+      if (error) return alert(error);
+      try {
+        setStatus("DB에 새 주제를 저장하는 중...");
+        const saved = await saveToSheet("create", item);
+        selectedItem = saved;
+        await loadContentDB();
+        await generateByItem(saved);
+      } catch (error) {
+        alert("저장 실패: " + error.message);
+        setStatus("저장 실패");
+      }
+    }
+
+    async function updateAndGenerate() {
+      const item = getManualItem();
+      if (!item["ID"]) return alert("수정 저장하려면 먼저 DB 주제를 불러오거나 ID가 있어야 합니다.");
+      const error = validateManualItem(item);
+      if (error) return alert(error);
+      try {
+        setStatus("DB 내용을 수정 저장하는 중...");
+        const saved = await saveToSheet("update", item);
+        selectedItem = saved;
+        await loadContentDB();
+        await generateByItem(saved);
+      } catch (error) {
+        alert("수정 저장 실패: " + error.message);
+        setStatus("수정 저장 실패");
+      }
+    }
+
+    async function saveToSheet(action, item) {
+      const res = await fetch(SHEET_API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({ action, item })
+      });
+      const data = await res.json();
+      if (!data.ok) throw new Error(data.error || "Apps Script 저장 오류");
+      return data.item;
+    }
+
+    async function generateByItem(item) {
       const contentType = document.getElementById("contentType").value;
 
-      if (!isAllowedContentType(selectedItem, contentType)) {
+      if (!isAllowedContentType(item, contentType)) {
         alert(`이 주제는 '${contentType}' 생성이 FALSE로 되어 있습니다.`);
         return;
       }
@@ -851,16 +1023,17 @@
       document.getElementById("result").innerHTML = `<div class="empty">생성 중...</div>`;
 
       const payload = {
-        id: selectedItem["ID"],
-        category: selectedItem["카테고리"],
-        topic: selectedItem["주제"],
-        coreMessage: selectedItem["핵심메시지"],
-        evidence1: selectedItem["근거1"],
-        evidence2: selectedItem["근거2"],
-        evidence3: selectedItem["근거3"],
-        requiredKeywords: selectedItem["반드시포함"],
-        forbiddenTopics: selectedItem["금지내용"],
-        memo: selectedItem["메모"],
+        id: item["ID"],
+        category: item["카테고리"],
+        topic: item["주제"],
+        coreMessage: item["핵심메시지"],
+        evidence1: item["근거1"],
+        evidence2: item["근거2"],
+        evidence3: item["근거3"],
+        requiredKeywords: item["반드시포함"],
+        forbiddenTopics: item["금지내용"],
+        memo: item["메모"],
+        extraPrompt: document.getElementById("extraPrompt").value.trim(),
         contentType,
         contentGoal: document.getElementById("contentGoal").value,
         tone: document.getElementById("tone").value,
@@ -874,19 +1047,23 @@
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload)
         });
-
         const data = await res.json();
-
         if (data.error) throw new Error(data.error);
-
         const parsed = safeJsonParse(data.result);
         renderResult(contentType, parsed, data.result);
         setStatus("생성 완료");
       } catch (error) {
-        document.getElementById("result").innerHTML =
-          `<div class="text-output">에러 발생: ${escapeHtml(error.message)}</div>`;
+        document.getElementById("result").innerHTML = `<div class="text-output">에러 발생: ${escapeHtml(error.message)}</div>`;
         setStatus("생성 실패");
       }
+    }
+
+    async function generateFromSelectedDB() {
+      if (!selectedItem) {
+        alert("DB 주제를 먼저 선택해주세요.");
+        return;
+      }
+      await generateByItem(selectedItem);
     }
 
     function getFrameworkValue() {
